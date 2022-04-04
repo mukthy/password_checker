@@ -1,8 +1,8 @@
 import requests
 import hashlib
+import sys
 
-
-password = input('Please enter your password to check: \n')
+#  password = input('Please enter your password to check: \n')
 
 
 def request_api(query_hash):
@@ -19,21 +19,31 @@ def read_response(hashes, rest_chars):
     hashes = (line.split(':') for line in hashes.text.splitlines())
     for h, count in hashes:
         if h == rest_chars:
-            print(f'Your Password {password} has been Pwned {count} times')
-
-        else:
-            print(f'Your password {password} has not been found, go ahead!')
-            break
+            return count
+    return 0
 
 
 def hash_password(password):
     sha1password = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
     first_5_chars = sha1password[:5]
     rest_chars = sha1password[5:]
-    print(first_5_chars, rest_chars)
+    # print(first_5_chars, rest_chars)
     response = request_api(first_5_chars)
-    print(response)
+    # print(response)
     return read_response(response, rest_chars)
 
 
-hash_password(password)
+def main(args):
+    for password in args:
+        count = hash_password(password)
+        if count:
+            print(f'{password} was found {count} times, please change the password..')
+
+        else:
+            print(f'{password} was not found, please go ahead.')
+
+    return 'Done!'
+
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv[1:]))
