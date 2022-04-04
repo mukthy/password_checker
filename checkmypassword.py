@@ -4,6 +4,7 @@ import hashlib
 
 password = input('Please enter your password to check: \n')
 
+
 def request_api(query_hash):
     # print(query_hash)
     url = 'https://api.pwnedpasswords.com/range/' + f'{query_hash}'
@@ -15,10 +16,14 @@ def request_api(query_hash):
 
 
 def read_response(hashes, rest_chars):
-    if rest_chars in hashes.text:
-        print('Found')
-    else:
-        print('Not Found')
+    hashes = (line.split(':') for line in hashes.text.splitlines())
+    for h, count in hashes:
+        if h == rest_chars:
+            print(f'Your Password {password} has been Pwned {count} times')
+
+        else:
+            print(f'Your password {password} has not been found, go ahead!')
+            break
 
 
 def hash_password(password):
