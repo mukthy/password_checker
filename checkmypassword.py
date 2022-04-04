@@ -15,7 +15,6 @@ def request_api(query_hash):
 
 
 def read_response(hashes, rest_chars):
-    #print(hashes.text)
     if rest_chars in hashes.text:
         print('Found')
     else:
