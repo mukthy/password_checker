@@ -7,6 +7,7 @@ import sys
 
 def request_api(query_hash):
     # print(query_hash)
+    # API of have I been pawned.
     url = 'https://api.pwnedpasswords.com/range/' + f'{query_hash}'
     response = requests.get(url)
     if response.status_code != 200:
